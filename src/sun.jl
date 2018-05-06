@@ -1,3 +1,9 @@
+#
+# usage sun(day_number, latitude, longitude, UT)
+# Takes the day, latitude, longitude and grenwich mean time and returns
+# right ascention, declination, sidreal time, altitude and azimuth
+#
+
 function sun(day_number, latitude, longitude, UT)
 	w = 282.9404 + 4.70935e-5 * DayNumber    # longitude of perihelion
 	a = 1                                    # mean distance, a.u.

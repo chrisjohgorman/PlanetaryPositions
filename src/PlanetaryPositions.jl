@@ -1,9 +1,9 @@
 module PlanetaryPositions
 
-latitude = 45.480295
-longitude = -75.466788
+latitude = 45.365624
+longitude = -75.790013
 
-day = day_number(1998,8,10)
+day = day_number(1999,4,19)
 utc_time = 0
 
 su = sun(day,latitude,longitude,utc_time)
