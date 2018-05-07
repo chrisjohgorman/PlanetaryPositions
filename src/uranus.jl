@@ -7,7 +7,7 @@
 # It returns an array of [lon, lat, r].
 #
 
-function uranus_data = uranus (day_number)
+function uranus(day_number)
 	N =  74.0005 + 1.3978E-5    * day_number # Long of asc. node
 	i =   0.7733 + 1.9E-8       * day_number # Inclination
 	w =  96.6612 + 3.0565E-5    * day_number # Argument of perihelion
@@ -35,9 +35,9 @@ function uranus_data = uranus (day_number)
         zeclip = r * sind(v+w) * sind(i)
         # add sun's rectangular coordinates
         sunr = sun_rectangular(day_number)
-        xgeoc = sunr(1) + xeclip
-        ygeoc = sunr(2) + yeclip
-        zgeoc = sunr(3) + zeclip
+        xgeoc = sunr[1] + xeclip
+        ygeoc = sunr[2] + yeclip
+        zgeoc = sunr[3] + zeclip
         # rotate the equitorial coordinates
         xequat = xgeoc
         yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
@@ -57,5 +57,5 @@ function uranus_data = uranus (day_number)
 				     -0.015 * sind(Mj - Mu + 20)
 	lon = perturbations_in_longitude + lon
 	lon = rev(lon)
-	uranus_data = [lon, lat, r, RA, Decl, R]
-endfunction
+	return [lon, lat, r, RA, Decl, R]
+end

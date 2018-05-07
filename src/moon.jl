@@ -94,4 +94,4 @@ function moon(day_number, latitude, SIDTIME)
 	topDecl = Decl - mpar * rho * sind(gclat) * sind(g - Decl) / sind(g)
        	moon_data = [topRA, topDecl, az, alt]
        	#moon_data = [RA, Decl, az, alt]
-endfunction
+end

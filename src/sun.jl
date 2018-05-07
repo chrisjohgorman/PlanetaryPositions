@@ -5,12 +5,12 @@
 #
 
 function sun(day_number, latitude, longitude, UT)
-	w = 282.9404 + 4.70935e-5 * DayNumber    # longitude of perihelion
+	w = 282.9404 + 4.70935e-5 * day_number    # longitude of perihelion
 	a = 1                                    # mean distance, a.u.
-	e = 0.016709 - 1.151e-9 * DayNumber      # eccentricity
-	M = 356.0470 + 0.9856002585 * DayNumber  # mean anomaly
+	e = 0.016709 - 1.151e-9 * day_number      # eccentricity
+	M = 356.0470 + 0.9856002585 * day_number  # mean anomaly
 	M = rev(M) 
-	oblecl = 23.4393 - 3.563e-7 * DayNumber  # obliquity of the eliptic
+	oblecl = 23.4393 - 3.563e-7 * day_number  # obliquity of the eliptic
 	L = w + M 				 # sun's mean longitude
 	L = rev(L) 
 	# sun's eccentric anomaly

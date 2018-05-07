@@ -30,9 +30,9 @@ function venus(day_number)
         zeclip = r * sind(v+w) * sind(i)
         # add sun's rectangular coordinates
         sunr = sun_rectangular(day_number)
-        xgeoc = sunr(1) + xeclip
-        ygeoc = sunr(2) + yeclip
-        zgeoc = sunr(3) + zeclip
+        xgeoc = sunr[1] + xeclip
+        ygeoc = sunr[2] + yeclip
+        zgeoc = sunr[3] + zeclip
         # rotate the equitorial coordinates
         xequat = xgeoc
         yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
@@ -47,5 +47,5 @@ function venus(day_number)
         lon = atan2(yeclip, xeclip)
         lon = rev(lon)
         lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip))
-	venus_data = [lon, lat, r, RA, Decl, R]
+	return [lon, lat, r, RA, Decl, R]
 end

@@ -30,9 +30,9 @@ function mercury(day_number)
         zeclip = r * sind(v+w) * sind(i)
 	# add sun's rectangular coordinates
 	sunr = sun_rectangular(day_number)
-	xgeoc = sunr(1) + xeclip
-	ygeoc = sunr(2) + yeclip
-	zgeoc = sunr(3) + zeclip
+	xgeoc = sunr[1] + xeclip
+	ygeoc = sunr[2] + yeclip
+	zgeoc = sunr[3] + zeclip
 	# rotate the equitorial coordinates
 	xequat = xgeoc
 	yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
