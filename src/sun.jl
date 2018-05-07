@@ -20,7 +20,7 @@ function sun(day_number, latitude, longitude, UT)
 	y = sind(E) * sqrt(1 - e*e) 
 	# convert to distance and true anomaly
 	r = sqrt(x*x + y*y) 
-	v = atan2(y, x) 
+	v = atan2(y, x)*(180/pi) 
 	# sun's longitude
 	lon = v + w 
 	lon = rev(lon) 
@@ -33,11 +33,11 @@ function sun(day_number, latitude, longitude, UT)
 	yequat = y1 * cosd(oblecl) - z1 * sind(oblecl) 
 	zequat = y1 * sind(oblecl) + z1 * cosd(oblecl) 
 
-	RA = atan2(yequat, xequat) 
+	RA = atan2(yequat, xequat) * (180/pi) 
 	RA = rev(RA) 
 	# convert RA to hours
 	RA = RA / 15 
-	Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat)) 
+	Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat)) * (180/pi)
 	
 	# calculate GMST0 	
 	GMST0 = rev(L + 180) / 15 
@@ -59,7 +59,7 @@ function sun(day_number, latitude, longitude, UT)
 	zhor = x2 * cosd(latitude) + z2 * sind(latitude) 
 
 	# finally calculate azimuth and altitude 
-	azimuth = atan2(yhor, xhor) + 180 
-	altitude = atan2(zhor, sqrt(xhor*xhor + yhor*yhor)) 
-	sun_data = [RA, Decl, SIDTIME, azimuth, altitude] 
+	azimuth = atan2(yhor, xhor) * (180/pi) + 180 
+	altitude = atan2(zhor, sqrt(xhor*xhor + yhor*yhor)) * (180/pi)
+	return [RA, Decl, SIDTIME, azimuth, altitude] 
 end
