@@ -1,18 +1,19 @@
 #
-# convert from RA and Decliantion to altitude and azimuth
+# convert from right_ascension and decliantion to altitude and azimuth
 # 
 
-function az_alt(SIDTIME,RA,Decl,latitude)
-	HA = SIDTIME - RA
-	HA = rev_ha(HA)
-	HA = HA * 15
-	x = cosd(HA)*cosd(Decl)
-	y = sind(HA)*cosd(Decl)
-	z = sind(Decl)
-	xhor = x * sind(latitude) - z * cosd(latitude)
-	yhor = y
-	zhor = x * cosd(latitude) + z * sind(latitude)
-	azimuth = atan2(yhor,xhor) + 180
-	altitude = atan2(zhor, sqrt(xhor*xhor+yhor*yhor))
-	az_alt_data = [azimuth, altitude]
-endfunction
+function altitude_azimuth(sidreal_time,right_ascension,declination,latitude)
+	hour_angle = sidreal_time - right_ascension
+	# FIXME change script rev_ha to revolve_hour_angle
+	hour_angle = rev_ha(hour_angle)
+	hour_angle = hour_angle * 15
+	x = cosd(hour_angle)*cosd(declination)
+	y = sind(hour_angle)*cosd(declination)
+	z = sind(declination)
+	x_horizon = x * sind(latitude) - z * cosd(latitude)
+	y_horizon = y
+	z_horizon = x * cosd(latitude) + z * sind(latitude)
+	azimuth = atan2(y_horizon,x_horizon) + 180
+	altitude = atan2(z_horizon, sqrt(x_horizon*x_horizon+y_horizon*y_horizon))
+	altitude_azimuth = [altitude, azimuth]
+end
