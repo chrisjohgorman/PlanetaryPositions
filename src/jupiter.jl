@@ -3,8 +3,8 @@
 #
 # this function takes a day number from the 
 # day_number function and uses it to calculate
-# Jupiter's latitude, longitude and distance
-# It returns an array of [longitude, latitude, r].
+# Jupiter's latitude, longitude and distance, right_ascension
+# declination and R. It returns an array of these values 
 #
 
 function jupiter(day_number)
@@ -31,11 +31,16 @@ function jupiter(day_number)
         distance = sqrt(x*x + y*y)
         true_anomaly = atan2(y, x)
         # jupiter's position in ecliptic coordinates
-        x_ecliptic = distance * ( cosd(node) * cosd(true_anomaly + argument_of_perihelion) 
-		- sind(node) * sind(true_anomaly + argument_of_perihelion) * cosd(inclination))
-        y_ecliptic = distance * ( sind(node) * cosd(true_anomaly + argument_of_perihelion) 
-		+ cosd(node) * sind(true_anomaly + argument_of_preihelion) * cosd(inclination))
-        z_ecliptic = distance * sind(true_anomaly + argument_of_perihelion) * sind(inclination)
+        x_ecliptic = distance * ( cosd(node) 
+		* cosd(true_anomaly + argument_of_perihelion) 
+		- sind(node) * sind(true_anomaly + argument_of_perihelion) 
+		* cosd(inclination))
+        y_ecliptic = distance * ( sind(node) 
+		* cosd(true_anomaly + argument_of_perihelion) 
+		+ cosd(node) * sind(true_anomaly + argument_of_preihelion) 
+		* cosd(inclination))
+        z_ecliptic = distance * sind(true_anomaly + argument_of_perihelion) 
+		* sind(inclination)
         # add sun's rectangular coordinates
         sun_rectantular = sun_rectangular(day_number)
         x_geocentric = sun_rectangular(1) + x_ecliptic
@@ -57,14 +62,15 @@ function jupiter(day_number)
         # convert to ecliptic longitude and latitude
         longitude = atan2(y_ecliptic, x_ecliptic)
         longitude = rev(longitude)
-        latitude = atan2(z_ecliptic, sqrt(x_ecliptic*x_ecliptic + y_ecliptic*y_ecliptic))
-	perturbations_of_longitude = -0.332 * sind(2*mean_anomaly_jupiter - 5*mean_anomaly_saturn - 67.6) 
-				     -0.056 * sind(2*mean_anomaly_jupiter - 2*mean_anomaly_saturn + 21) 
-				     +0.042 * sind(3*mean_anomaly_jupiter - 5*mean_anomaly_saturn + 21) 
-				     -0.036 * sind(mean_anomaly_jupiter - 2*mean_anomaly_saturn) 
-				     +0.022 * cosd(mean_anomaly_jupiter - mean_anomaly_saturn) 
-				     +0.023 * sind(2*mean_anomaly_jupiter - 3*mean_anomaly_saturn + 52) 
-				     -0.016 * sind(mean_anomaly_juputer - 5*mean_anomaly_saturn - 69)
+        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2))
+	perturbations_of_longitude = -0.332 * sind(2*mean_anomaly_jupiter 
+		- 5*mean_anomaly_saturn - 67.6) -0.056 * sind(2*mean_anomaly_jupiter 
+		- 2*mean_anomaly_saturn + 21) +0.042 * sind(3*mean_anomaly_jupiter 
+		- 5*mean_anomaly_saturn + 21) -0.036 * sind(mean_anomaly_jupiter 
+		- 2*mean_anomaly_saturn) +0.022 * cosd(mean_anomaly_jupiter 
+		- mean_anomaly_saturn) +0.023 * sind(2*mean_anomaly_jupiter 
+		- 3*mean_anomaly_saturn + 52) -0.016 * sind(mean_anomaly_juputer 
+		- 5*mean_anomaly_saturn - 69)
 	longitude = longitude + perturbations_of_longitude
 	longitude = rev(longitude)
 	jupiter = [longitude, latitude, distance, right_ascension, declination, R]
