@@ -5,5 +5,5 @@
 #
 
 function rev(degree)
-	degree - floor(degree/360)*360
+	return	degree - floor(degree/360)*360
 end

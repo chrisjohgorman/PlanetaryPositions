@@ -3,49 +3,59 @@
 #
 # this function takes a day number from the 
 # day_number function and uses it to calculate
-# the mars's Right Ascension and Declination.
-# It returns RA, Decl and r 
+# mars's latitude, longitude, distance, 
+# right ascension and Declination. It returns an 
+# array of these values
 #
 
 function mars(day_number)
-    	N =  49.5574 + 2.11081e-5   * day_number
-    	i =   1.8497 - 1.78e-8      * day_number
-    	w = 286.5016 + 2.92961e-5   * day_number
-    	a = 1.523688				
-    	e = 0.093405     + 2.516e-9 * day_number
-    	M =  18.6021 + 0.5240207766 * day_number
-	M = rev(M)
-        oblecl = 23.4393 - 3.563e-7 * day_number # obliquity of the eliptic
+    	node =  49.5574 + 2.11081e-5 * day_number
+    	inclination = 1.8497 - 1.78e-8 * day_number
+    	argument_of_perihelion = 286.5016 + 2.92961e-5 * day_number
+    	axis = 1.523688	
+    	eccentricity = 0.093405 + 2.516e-9 * day_number
+    	mean_anomaly =  18.6021 + 0.5240207766 * day_number
+	mean_anomaly = rev(mean_anomaly)
+        obliquity_of_ecliptic = 23.4393 - 3.563e-7 * day_number 
 
-	E = eccentric_anomaly(M, e, 0.0005)
+	EccentricAnomaly = eccentric_anomaly(mean_anomaly, eccentricity, 0.0005)
         # mars's rectrangular coordinates
-        x = a * (cosd(E) - e)
-        y = a * sind(E) * sqrt(1 - e*e)
+        x = axis * (cosd(EccentricAnomaly) - eccentricity)
+        y = axis * sind(EccentricAnomaly) * sqrt(1 - eccentricity^2)
         # convert to distance and true anomaly
-        r = sqrt(x*x + y*y)
-        v = atan2(y, x)
+        distance = sqrt(x*x + y*y)
+        true_anomaly = atan2(y, x)
         # mars's position in ecliptic coordinates
-        xeclip = r * ( cosd(N) * cosd(v+w) - sind(N) * sind(v+w) * cosd(i))
-        yeclip = r * ( sind(N) * cosd(v+w) + cosd(N) * sind(v+w) * cosd(i))
-        zeclip = r * sind(v+w) * sind(i)
+        x_ecliptic = distance * ( cosd(node) 
+		* cosd(true_anomaly + argument_of_perihelion) 
+		- sind(node) * sind(true_anomaly + argument_of_perihelion) 
+		* cosd(inclination))
+        y_ecliptic = distance * ( sind(node) 
+		* cosd(true_anomaly + argument_of_perihelion) 
+		+ cosd(node) * sind(true_anomaly + argument_of_perihelion) 
+		* cosd(inclination))
+        z_ecliptic = distance * (sind(true_anomaly + argument_of_perihelion)
+		* sind(inclination))
         # add sun's rectangular coordinates
-        sunr = sun_rectangular(day_number)
-        xgeoc = sunr(1) + xeclip
-        ygeoc = sunr(2) + yeclip
-        zgeoc = sunr(3) + zeclip
+        SunRectangular = sun_rectangular(day_number)
+        x_geocentric = SunRectangular[1] + x_ecliptic
+        y_geocentric = SunRectangular[2] + y_ecliptic
+        z_geocentric = SunRectangular[3] + z_ecliptic
         # rotate the equitorial coordinates
-        xequat = xgeoc
-        yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
-        zequat = ygeoc * sind(oblecl) + zgeoc * cosd(oblecl)
-        # convert to RA and Decl
-        RA = atan2(yequat, xequat)
-        RA = rev(RA)
-	RA = RA / 15
-        Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat))
-        R = sqrt(xequat^2+yequat^2+zequat^2)
+        x_equatorial = x_geocentric
+        y_equatorial = y_geocentric * cosd(obliquity_of_ecliptic) 
+		- z_geocentric * sind(obliquity_of_ecliptic)
+        z_equatorial = y_geocentric * sind(obliquity_of_ecliptic) 
+		+ z_geocentric * cosd(obliquity_of_ecliptic)
+        # convert to right_ascesion and Decl
+        right_ascesion = atan2(y_equatorial, x_equatorial)
+        right_ascesion = rev(right_ascesion)
+	right_ascesion = right_ascesion / 15
+        declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2))
+        R = sqrt(x_equatorial^2+y_equatorial^2+z_equatorial^2)
         # convert to ecliptic longitude and latitude
-        lon = atan2(yeclip, xeclip)
-        lon = rev(lon)
-        lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip))
-	mars_data = [lon, lat, r, RA, Decl, R]
+        longitude = atan2(y_ecliptic, x_ecliptic)
+        longitude = rev(longitude)
+        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2))
+	return [longitude, latitude, distance, right_ascesion, declination, R]
 end
