@@ -1,12 +1,13 @@
 module PlanetaryPositions
 
-export day_number, revolve, revolve_hour_angle, altitude_azimuth, eccentric_anomaly, sun_rectangular, latitude, longitude, utc_time
+export day_number, revolve, revolve_hour_angle, altitude_azimuth, eccentric_anomaly, sun_rectangular, latitude, longitude, utc_time 
 
-global latitude = 45.365624
-global longitude = -75.790013
+
+#latitude = 45.365624
+#longitude = -75.790013
 
 #day = day_number(1999,4,19)
-global utc_time = 0
+#utc_time = 0
 
 #su = sun(day,latitude,longitude,utc_time)
 #me = mercury(day)
@@ -112,8 +113,8 @@ end
 # convert from right_ascension and decliantion to altitude and azimuth
 # 
 
-function altitude_azimuth(sidreal_time,right_ascension,declination,latitude)
-	hour_angle = sidreal_time - right_ascension
+function altitude_azimuth(sidereal_time,right_ascension,declination,latitude)
+	hour_angle = sidereal_time - right_ascension
 	hour_angle = revolve_hour_angle(hour_angle)
 	hour_angle = hour_angle * 15
 	x = cosd(hour_angle)*cosd(declination)
@@ -122,8 +123,9 @@ function altitude_azimuth(sidreal_time,right_ascension,declination,latitude)
 	x_horizon = x * sind(latitude) - z * cosd(latitude)
 	y_horizon = y
 	z_horizon = x * cosd(latitude) + z * sind(latitude)
-	azimuth = atan2(y_horizon,x_horizon) * (180/pi) + 180
-	altitude = atan2(z_horizon, sqrt(x_horizon^2+y_horizon^2)) * (180*pi)
+	azimuth = atan2(y_horizon,x_horizon) * (180/pi) + 180 
+	#altitude = atan2(z_horizon, sqrt(x_horizon^2+y_horizon^2)) * (180*pi)
+	altitude = asind(z_horizon)
 	return [altitude, azimuth]
 end
 
