@@ -70,5 +70,5 @@ function jupiter(day_number)
 		- 5*mean_anomaly_saturn - 69)
 	longitude = longitude + perturbations_of_longitude
 	longitude = revolve(longitude)
-	jupiter = [longitude, latitude, distance, right_ascension, declination]
+	return [longitude, latitude, distance, right_ascension, declination]
 end
