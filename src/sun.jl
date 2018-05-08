@@ -9,10 +9,10 @@ function sun(day_number, latitude, longitude, UT)
 	a = 1                                    # mean distance, a.u.
 	e = 0.016709 - 1.151e-9 * day_number      # eccentricity
 	M = 356.0470 + 0.9856002585 * day_number  # mean anomaly
-	M = rev(M) 
+	M = revolve(M) 
 	oblecl = 23.4393 - 3.563e-7 * day_number  # obliquity of the eliptic
 	L = w + M 				 # sun's mean longitude
-	L = rev(L) 
+	L = revolve(L) 
 	# sun's eccentric anomaly
 	E = M + (180/pi) * e * sind(M) * (1 + e * cosd(M)) 
 	# sun's rectrangular coordinates
@@ -23,7 +23,7 @@ function sun(day_number, latitude, longitude, UT)
 	v = atan2(y, x)*(180/pi) 
 	# sun's longitude
 	lon = v + w 
-	lon = rev(lon) 
+	lon = revolve(lon) 
 	# sun's ecliptic rectangular coordinates
 	x1 = r * cosd(lon) 
 	y1 = r * sind(lon) 
@@ -34,18 +34,18 @@ function sun(day_number, latitude, longitude, UT)
 	zequat = y1 * sind(oblecl) + z1 * cosd(oblecl) 
 
 	RA = atan2(yequat, xequat) * (180/pi) 
-	RA = rev(RA) 
+	RA = revolve(RA) 
 	# convert RA to hours
 	RA = RA / 15 
 	Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat)) * (180/pi)
 	
 	# calculate GMST0 	
-	GMST0 = rev(L + 180) / 15 
+	GMST0 = revolve(L + 180) / 15 
 	#UT = UT 
 
 	# calculate SIDTIME and Hour Angle
 	SIDTIME = GMST0 + UT + longitude/15 
-	#SIDTIME = rev_ha(SIDTIME)
+	#SIDTIME = revolve_ha(SIDTIME)
 	HA = (SIDTIME - RA) * 15 
 
 	# convert HA and Decl to rectangular system

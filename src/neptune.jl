@@ -14,7 +14,7 @@ function neptune(day_number)
 	a = 30.05826 + 3.313E-8     * day_number
 	e = 0.008606 + 2.15E-9      * day_number
 	M = 260.2471 + 0.005995147  * day_number
-	M = rev(M)
+	M = revolve(M)
         oblecl = 23.4393 - 3.563e-7 * day_number # obliquity of the eliptic
 	
 	E = eccentric_anomaly(M, e, 0.0005)
@@ -23,7 +23,7 @@ function neptune(day_number)
         y = a * sind(E) * sqrt(1 - e*e)
         # convert to distance and true anomaly
         r = sqrt(x*x + y*y)
-        v = atan2(y, x)
+        v = atan2(y, x) * (180/pi)
         # neptune's position in ecliptic coordinates
         xeclip = r * ( cosd(N) * cosd(v+w) - sind(N) * sind(v+w) * cosd(i))
         yeclip = r * ( sind(N) * cosd(v+w) + cosd(N) * sind(v+w) * cosd(i))
@@ -38,14 +38,14 @@ function neptune(day_number)
         yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
         zequat = ygeoc * sind(oblecl) + zgeoc * cosd(oblecl)
         # convert to RA and Decl
-        RA = atan2(yequat, xequat)
-        RA = rev(RA)
+        RA = atan2(yequat, xequat) * (180/pi)
+        RA = revolve(RA)
 	RA = RA / 15
-        Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat))
+        Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat)) *(180/pi)
         R = sqrt(xequat^2+yequat^2+zequat^2)
         # convert to ecliptic longitude and latitude
-        lon = atan2(yeclip, xeclip)
-        lon = rev(lon)
-        lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip))
-	neptune_data = [lon, lat, r, RA, Decl, R]
+        lon = atan2(yeclip, xeclip) * (180/pi)
+        lon = revolve(lon)
+        lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip)) * (180/pi)
+	return [lon, lat, r, RA, Decl, R]
 endfunction

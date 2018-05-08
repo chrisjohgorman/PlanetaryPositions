@@ -14,7 +14,7 @@ function moon(day_number, latitude, SIDTIME)
 	a = 60.2666				  # mean distance
 	e = 0.054900				  # eccentricity
 	M = 115.3654 + 13.0649929509 * day_number# mean anomaly
-	M = rev(M)
+	M = revolve(M)
 	oblecl = 23.4393 - 3.563e-7 * day_number # obliquity of the eliptic
 
 	E = eccentric_anomaly(M, e, 0.0005)
@@ -23,21 +23,21 @@ function moon(day_number, latitude, SIDTIME)
 	y = a * sind(E) * sqrt(1 - e*e)
 	# convert to distance and true anomaly
 	r = sqrt(x*x + y*y)
-	v = atan2(y, x)
+	v = atan2(y, x) * (180/pi)
 	# moon's position in ecliptic coordinates
 	xeclip = r * ( cosd(N) * cosd(v+w) - sind(N) * sind(v+w) * cosd(i))
 	yeclip = r * ( sind(N) * cosd(v+w) + cosd(N) * sind(v+w) * cosd(i))
 	zeclip = r * sind(v+w) * sind(i)
 	# convert to ecliptic longitude, latitude and distance
-	lon = atan2(yeclip, xeclip)
-	lon = rev(lon)
-	lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip))
+	lon = atan2(yeclip, xeclip) * (180/pi)
+	lon = revolve(lon)
+	lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip)) * (180/pi)
 
 	Sw = 282.9404 + 4.70935e-5   * day_number # sun's (longitude of 
 						   # perihelion)
 	Ms = 356.0470 + 0.9856002585 * day_number # sun's mean anomaly
 	Ls = Sw + Ms
-	Ls = rev(Ls)
+	Ls = revolve(Ls)
 	Lm = N + w + M
 	Mm = M
 	D = Lm - Ls
@@ -71,11 +71,11 @@ function moon(day_number, latitude, SIDTIME)
 	x2 = x1
 	y2 = y1 * cosd(oblecl) - z1 * sind(oblecl)
 	z2 = y1 * sind(oblecl) + z1 * cosd(oblecl)
-	RA = atan2(y2,x2)
+	RA = atan2(y2,x2) * (180/pi)
 	RA1 = RA
 	RA = RA / 15
-	RA = rev_ha(RA)
-	Decl = atan2(z2, sqrt(x2*x2 + y2*y2))
+	RA = revolve_hour_angle(RA)
+	Decl = atan2(z2, sqrt(x2*x2 + y2*y2)) * (180/pi)
 	HA = (SIDTIME - RA) * 15
 	x = cosd(HA) * cosd(Decl)
 	y = sind(HA) * cosd(Decl)
@@ -83,14 +83,14 @@ function moon(day_number, latitude, SIDTIME)
 	xhor = x * sind(latitude) - z * cosd(latitude)
 	yhor = y
 	zhor = x * cosd(latitude) + z * sind(latitude)
-	az  = atan2( yhor, xhor ) + 180
+	az  = atan2( yhor, xhor ) * (180/pi) + 180
 	alt = asind( zhor )
 	mpar = asind(1/r)
 	gclat = latitude - 0.1924 * sind(2*latitude)
 	rho   = 0.99833 + 0.00167 * cosd(2*latitude)
-	g = atand( tand(gclat) / cosd(HA) )
+	g = atand( tand(gclat) / cosd(HA) ) 
 	topRA   = RA1  - mpar * rho * cosd(gclat) * sind(HA) / cosd(Decl)
-	topRA = rev(topRA)
+	topRA = revolve(topRA)
 	topDecl = Decl - mpar * rho * sind(gclat) * sind(g - Decl) / sind(g)
        	moon_data = [topRA, topDecl, az, alt]
        	#moon_data = [RA, Decl, az, alt]
