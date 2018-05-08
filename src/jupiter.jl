@@ -14,13 +14,12 @@ function jupiter(day_number)
 	axis = 5.20256					# Semi-major axis
 	eccentricity = 0.048498 + 4.469e-9 * day_number
 	mean_anomaly=  19.8950 + 0.0830853001 * day_number
-	# FIXME change script name from rev to revolve
-	mean_anomaly = rev(mean_anomaly)
+	mean_anomaly = revolve(mean_anomaly)
 	mean_anomaly_jupiter = mean_anomaly
 	mean_anomaly_saturn = 316.9670 + 0.0334442282 * day_number
-	mean_anomaly_saturn = rev(mean_anomaly_saturn)
+	mean_anomaly_saturn = revolve(mean_anomaly_saturn)
 	mean_anomaly_uranus = 142.5905 + 0.011725806 * day_number
-	mean_anomaly_uranus = rev(mean_anomaly_uranus)
+	mean_anomaly_uranus = revolve(mean_anomaly_uranus)
 	obliquity_of_ecliptic = 23.4393 - 3.563e-7 * day_number 
 	
 	EccentricAnomaly = eccentric_anomaly(mean_anomaly, eccentricity, 0.0005)
@@ -53,15 +52,13 @@ function jupiter(day_number)
 		+ z_geocentric * cosd(obliquity_of_ecliptic)
         # convert to right_ascension and declination
         right_ascension = atan2(y_equatorial, x_equatorial) * (180/pi)
-        right_ascension = rev(right_ascension)
+        right_ascension = revolve(right_ascension)
 	right_ascension = right_ascension/15
         declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2)) * (180/pi) 
-	#FIXME do we need this variable?
         #R = sqrt(x_equatorial^2+y_equatorial^2+z_equatorial^2)
-        #declination = asind(z_equatorial/R)
         # convert to ecliptic longitude and latitude
         longitude = atan2(y_ecliptic, x_ecliptic) * (180/pi)
-        longitude = rev(longitude)
+        longitude = revolve(longitude)
         latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2)) * (180/pi)
 	perturbations_of_longitude = -0.332 * sind(2*mean_anomaly_jupiter 
 		- 5*mean_anomaly_saturn - 67.6) -0.056 * sind(2*mean_anomaly_jupiter 
@@ -72,6 +69,6 @@ function jupiter(day_number)
 		- 3*mean_anomaly_saturn + 52) -0.016 * sind(mean_anomaly_jupiter 
 		- 5*mean_anomaly_saturn - 69)
 	longitude = longitude + perturbations_of_longitude
-	longitude = rev(longitude)
+	longitude = revolve(longitude)
 	jupiter = [longitude, latitude, distance, right_ascension, declination]
 end
