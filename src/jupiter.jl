@@ -29,7 +29,7 @@ function jupiter(day_number)
         y = axis * sind(EccentricAnomaly) * sqrt(1 - eccentricity^2)
         # convert to distance and true anomaly
         distance = sqrt(x*x + y*y)
-        true_anomaly = atan2(y, x)
+        true_anomaly = atan2(y, x) * (180/pi)
         # jupiter's position in ecliptic coordinates
         x_ecliptic = distance * ( cosd(node) 
 		* cosd(true_anomaly + argument_of_perihelion) 
@@ -52,16 +52,17 @@ function jupiter(day_number)
         z_equatorial = y_geocentric * sind(obliquity_of_ecliptic) 
 		+ z_geocentric * cosd(obliquity_of_ecliptic)
         # convert to right_ascension and declination
-        right_ascension = atan2(y_equatorial, x_equatorial)
+        right_ascension = atan2(y_equatorial, x_equatorial) * (180/pi)
         right_ascension = rev(right_ascension)
 	right_ascension = right_ascension/15
-        declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2))
+        declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2)) * (180/pi) 
 	#FIXME do we need this variable?
-        R = sqrt(x_equatorial^2+y_equatorial^2+z_equatorial^2)
+        #R = sqrt(x_equatorial^2+y_equatorial^2+z_equatorial^2)
+        #declination = asind(z_equatorial/R)
         # convert to ecliptic longitude and latitude
-        longitude = atan2(y_ecliptic, x_ecliptic)
+        longitude = atan2(y_ecliptic, x_ecliptic) * (180/pi)
         longitude = rev(longitude)
-        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2))
+        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2)) * (180/pi)
 	perturbations_of_longitude = -0.332 * sind(2*mean_anomaly_jupiter 
 		- 5*mean_anomaly_saturn - 67.6) -0.056 * sind(2*mean_anomaly_jupiter 
 		- 2*mean_anomaly_saturn + 21) +0.042 * sind(3*mean_anomaly_jupiter 
@@ -72,5 +73,5 @@ function jupiter(day_number)
 		- 5*mean_anomaly_saturn - 69)
 	longitude = longitude + perturbations_of_longitude
 	longitude = rev(longitude)
-	jupiter = [longitude, latitude, distance, right_ascension, declination, R]
+	jupiter = [longitude, latitude, distance, right_ascension, declination]
 end
