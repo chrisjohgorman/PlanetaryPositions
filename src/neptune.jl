@@ -48,4 +48,4 @@ function neptune(day_number)
         lon = revolve(lon)
         lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip)) * (180/pi)
 	return [lon, lat, r, RA, Decl, R]
-endfunction
+end
