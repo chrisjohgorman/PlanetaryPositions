@@ -54,7 +54,7 @@ function sun_rectangular(day_number)
 	x1 = r * cosd(lon)
 	y1 = r * sind(lon)
 	z1 = 0
-	return [x1,y1,z1]
+	return [x1,y1,z1,oblecl,L]
 end
 
 function revolve_hour_angle(hour)
