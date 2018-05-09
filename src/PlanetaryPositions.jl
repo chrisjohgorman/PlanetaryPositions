@@ -12,7 +12,7 @@ include("saturn.jl")
 include("uranus.jl")
 include("neptune.jl")
 
-function day_number(year,month,day)
+function day_number(year, month, day)
 	367*year - floor(7 * ( year + floor((month+9)/12))  / 4) + floor(275*month/9) + day - 730530
 end
 
@@ -20,7 +20,7 @@ function revolve(degree)
 	return	degree - floor(degree/360)*360
 end
 
-function eccentric_anomaly(M,e,tol)
+function eccentric_anomaly(M, e, tol)
 	e0 = M + (180/π) * e * sind(M) * (1 + e + cosd(M))
         e1 = e0 - (e0 - (180/π) * e * sind(e0) - M) / (1 - e * cosd(e0))
         while abs(e0-e1) > tol
@@ -46,7 +46,7 @@ function sun_rectangular(day_number)
 	y = sind(E) * sqrt(1 - e*e)
 	# convert to distance and true anomaly
 	r = sqrt(x*x + y*y)
-	v = atan2(y, x) * (180/pi)
+	v = atan2(y, x) * (180/π)
 	# sun's longitude
 	lon = v + w
 	lon = revolve(lon)
@@ -54,14 +54,14 @@ function sun_rectangular(day_number)
 	x1 = r * cosd(lon)
 	y1 = r * sind(lon)
 	z1 = 0
-	return [x1,y1,z1,oblecl,L]
+	return [x1, y1, z1, oblecl, L]
 end
 
 function revolve_hour_angle(hour)
-	answer = hour - floor(hour/24)*24
+	return hour - floor(hour/24)*24
 end
 
-function altitude_azimuth(sidereal_time,right_ascension,declination,latitude)
+function altitude_azimuth(sidereal_time, right_ascension, declination, latitude)
 	hour_angle = sidereal_time - right_ascension
 	hour_angle = revolve_hour_angle(hour_angle)
 	hour_angle = hour_angle * 15
@@ -71,7 +71,7 @@ function altitude_azimuth(sidereal_time,right_ascension,declination,latitude)
 	x_horizon = x * sind(latitude) - z * cosd(latitude)
 	y_horizon = y
 	z_horizon = x * cosd(latitude) + z * sind(latitude)
-	azimuth = atan2(y_horizon,x_horizon) * (180/pi) + 180 
+	azimuth = atan2(y_horizon,x_horizon) * (180/π) + 180 
 	altitude = asind(z_horizon)
 	return [altitude, azimuth]
 end

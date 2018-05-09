@@ -1,12 +1,4 @@
 
-#
-# this function takes a day number from the 
-# day_number function and uses it to calculate
-# mars's latitude, longitude, distance, 
-# right ascension and Declination. It returns an 
-# array of these values
-#
-
 function mars(day_number)
     	node =  49.5574 + 2.11081e-5 * day_number
     	inclination = 1.8497 - 1.78e-8 * day_number
@@ -23,7 +15,7 @@ function mars(day_number)
         y = axis * sind(EccentricAnomaly) * sqrt(1 - eccentricity^2)
         # convert to distance and true anomaly
         distance = sqrt(x*x + y*y)
-        true_anomaly = atan2(y, x) * (180/pi)
+        true_anomaly = atan2(y, x) * (180/π)
         # mars's position in ecliptic coordinates
         x_ecliptic = distance * ( cosd(node) 
 		* cosd(true_anomaly + argument_of_perihelion) 
@@ -45,13 +37,13 @@ function mars(day_number)
         y_equatorial = y_geocentric * cosd(obliquity_of_ecliptic) - z_geocentric * sind(obliquity_of_ecliptic)
         z_equatorial = y_geocentric * sind(obliquity_of_ecliptic) + z_geocentric * cosd(obliquity_of_ecliptic)
         # convert to right_ascesion and Decl
-        right_ascesion = atan2(y_equatorial, x_equatorial) * (180/pi)
+        right_ascesion = atan2(y_equatorial, x_equatorial) * (180/π)
         right_ascesion = revolve(right_ascesion)
 	right_ascesion = right_ascesion / 15
-        declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2)) * (180/pi)
+        declination = atan2(z_equatorial, sqrt(x_equatorial^2 + y_equatorial^2)) * (180/π)
         # convert to ecliptic longitude and latitude
         longitude = atan2(y_ecliptic, x_ecliptic) * (180/π)
         longitude = revolve(longitude)
-        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2)) *(180/pi)
+        latitude = atan2(z_ecliptic, sqrt(x_ecliptic^2 + y_ecliptic^2)) *(180/π)
 	return [longitude, latitude, distance, right_ascesion, declination]
 end

@@ -1,9 +1,3 @@
-#
-# usage sun(day_number, latitude, longitude, UT)
-# Takes the day, latitude, longitude and grenwich mean time and returns
-# right ascention, declination, sidreal time, altitude and azimuth
-#
-
 function sun(day_number, latitude, longitude, UT)
 	# rotate equitorial coordinates
 	coords = sun_rectangular(day_number)
@@ -11,15 +5,14 @@ function sun(day_number, latitude, longitude, UT)
 	yequat = coords[2] * cosd(coords[4]) - coords[3] * sind(coords[4])
 	zequat = coords[2] * sind(coords[4]) + coords[3] * cosd(coords[4])
 
-	RA = atan2(yequat, xequat) * (180/pi) 
+	RA = atan2(yequat, xequat) * (180/π) 
 	RA = revolve(RA) 
 	# convert RA to hours
 	RA = RA / 15 
-	Decl = atan2(zequat, sqrt(xequat*xequat + yequat*yequat)) * (180/pi)
+	Decl = atan2(zequat, sqrt(xequat^2 + yequat^2)) * (180/π)
 	
 	# calculate GMST0 	
 	GMST0 = revolve(coords[5] + 180) / 15 
-	#UT = UT 
 
 	# calculate SIDTIME and Hour Angle
 	SIDTIME = GMST0 + UT + longitude/15 
@@ -37,7 +30,7 @@ function sun(day_number, latitude, longitude, UT)
 	zhor = x2 * cosd(latitude) + z2 * sind(latitude) 
 
 	# finally calculate azimuth and altitude 
-	azimuth = atan2(yhor, xhor) * (180/pi) + 180 
-	altitude = atan2(zhor, sqrt(xhor*xhor + yhor*yhor)) * (180/pi)
+	azimuth = atan2(yhor, xhor) * (180/π) + 180 
+	altitude = atan2(zhor, sqrt(xhor^2 + yhor^2)) * (180/π)
 	return [RA, Decl, SIDTIME, azimuth, altitude] 
 end
