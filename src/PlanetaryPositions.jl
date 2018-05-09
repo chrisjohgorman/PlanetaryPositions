@@ -72,8 +72,6 @@ function altitude_azimuth(sidereal_time,right_ascension,declination,latitude)
 	y_horizon = y
 	z_horizon = x * cosd(latitude) + z * sind(latitude)
 	azimuth = atan2(y_horizon,x_horizon) * (180/pi) + 180 
-	#FIXME - remove next line using atan2 causes small errors
-	#altitude = atan2(z_horizon, sqrt(x_horizon^2+y_horizon^2)) * (180*pi)
 	altitude = asind(z_horizon)
 	return [altitude, azimuth]
 end
