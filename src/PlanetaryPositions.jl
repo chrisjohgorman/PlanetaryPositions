@@ -1,13 +1,22 @@
 module PlanetaryPositions
 
-export day_number, revolve, revolve_hour_angle, altitude_azimuth, eccentric_anomaly, sun_rectangular, latitude, longitude, utc_time 
+export revolve, revolve_hour_angle, altitude_azimuth, eccentric_anomaly, sun_rectangular, latitude, longitude, utc_time 
 
+include("sun.jl")
+include("moon.jl")
+include("mercury.jl")
+include("venus.jl")
+include("mars.jl")
+include("jupiter.jl")
+include("saturn.jl")
+include("uranus.jl")
+include("neptune.jl")
 
-#latitude = 45.365624
-#longitude = -75.790013
+latitude = 45.365624
+longitude = -75.790013
 
 #day = day_number(1999,4,19)
-#utc_time = 0
+utc_time = 0
 
 #su = sun(day,latitude,longitude,utc_time)
 #me = mercury(day)
