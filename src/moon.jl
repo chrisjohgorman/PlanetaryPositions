@@ -14,15 +14,15 @@ function moon(day_number, latitude, SIDTIME)
 	y = a * sind(E) * sqrt(1 - e*e)
 	# convert to distance and true anomaly
 	r = sqrt(x*x + y*y)
-	v = atan2(y, x) * (180/π)
+	v = atan(y, x) * (180/pi)
 	# moon's position in ecliptic coordinates
 	xeclip = r * ( cosd(N) * cosd(v+w) - sind(N) * sind(v+w) * cosd(i))
 	yeclip = r * ( sind(N) * cosd(v+w) + cosd(N) * sind(v+w) * cosd(i))
 	zeclip = r * sind(v+w) * sind(i)
 	# convert to ecliptic longitude, latitude and distance
-	lon = atan2(yeclip, xeclip) * (180/π)
+	lon = atan(yeclip, xeclip) * (180/pi)
 	lon = revolve(lon)
-	lat = atan2(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip)) * (180/π)
+	lat = atan(zeclip, sqrt(xeclip*xeclip + yeclip*yeclip)) * (180/pi)
 
 	Sw = 282.9404 + 4.70935e-5   * day_number # sun's (longitude of 
 						   # perihelion)
@@ -46,11 +46,11 @@ function moon(day_number, latitude, SIDTIME)
 	x2 = x1
 	y2 = y1 * cosd(oblecl) - z1 * sind(oblecl)
 	z2 = y1 * sind(oblecl) + z1 * cosd(oblecl)
-	RA = atan2(y2,x2) * (180/π)
+	RA = atan(y2,x2) * (180/pi)
 	RA1 = RA
 	RA = RA / 15
 	RA = revolve_hour_angle(RA)
-	Decl = atan2(z2, sqrt(x2*x2 + y2*y2)) * (180/π)
+	Decl = atan(z2, sqrt(x2*x2 + y2*y2)) * (180/pi)
 	HA = (SIDTIME - RA) * 15
 	x = cosd(HA) * cosd(Decl)
 	y = sind(HA) * cosd(Decl)
@@ -58,7 +58,7 @@ function moon(day_number, latitude, SIDTIME)
 	xhor = x * sind(latitude) - z * cosd(latitude)
 	yhor = y
 	zhor = x * cosd(latitude) + z * sind(latitude)
-	az  = atan2( yhor, xhor ) * (180/π) + 180
+	az  = atan( yhor, xhor ) * (180/pi) + 180
 	alt = asind( zhor )
 	mpar = asind(1/r)
 	gclat = latitude - 0.1924 * sind(2*latitude)

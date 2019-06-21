@@ -19,7 +19,7 @@ function uranus(day_number)
         y = a * sind(E) * sqrt(1 - e*e)
         # convert to distance and true anomaly
         r = sqrt(x*x + y*y)
-        v = atan2(y, x) * (180/π)
+        v = atan(y, x) * (180/pi)
         # uranus's position in ecliptic coordinates
         xeclip = r * ( cosd(N) * cosd(v+w) - sind(N) * sind(v+w) * cosd(i))
         yeclip = r * ( sind(N) * cosd(v+w) + cosd(N) * sind(v+w) * cosd(i))
@@ -34,15 +34,15 @@ function uranus(day_number)
         yequat = ygeoc * cosd(oblecl) - zgeoc * sind(oblecl)
         zequat = ygeoc * sind(oblecl) + zgeoc * cosd(oblecl)
         # convert to RA and Decl
-        RA = atan2(yequat, xequat) * (180/π)
+        RA = atan(yequat, xequat) * (180/pi)
         RA = revolve(RA)
 	RA = RA / 15
-        Decl = atan2(zequat, sqrt(xequat^2 + yequat^2)) * (180/π)
+        Decl = atan(zequat, sqrt(xequat^2 + yequat^2)) * (180/pi)
         R = sqrt(xequat^2+yequat^2+zequat^2)
         # convert to ecliptic longitude and latitude
-        lon = atan2(yeclip, xeclip) * (180/π)
+        lon = atan(yeclip, xeclip) * (180/pi)
         lon = revolve(lon)
-        lat = atan2(zeclip, sqrt(xeclip^2 + yeclip^2)) * (180/π)
+        lat = atan(zeclip, sqrt(xeclip^2 + yeclip^2)) * (180/pi)
 	perturbations_in_longitude = +0.040 * sind(Ms - 2*Mu + 6) +0.035 * sind(Ms - 3*Mu + 33) -0.015 * sind(Mj - Mu + 20)
 	lon = perturbations_in_longitude + lon
 	lon = revolve(lon)

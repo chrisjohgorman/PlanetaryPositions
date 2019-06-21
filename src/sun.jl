@@ -5,11 +5,11 @@ function sun(day_number, latitude, longitude, UT)
 	yequat = coords[2] * cosd(coords[4]) - coords[3] * sind(coords[4])
 	zequat = coords[2] * sind(coords[4]) + coords[3] * cosd(coords[4])
 
-	RA = atan2(yequat, xequat) * (180/π) 
+	RA = atan(yequat, xequat) * (180/pi) 
 	RA = revolve(RA) 
 	# convert RA to hours
 	RA = RA / 15 
-	Decl = atan2(zequat, sqrt(xequat^2 + yequat^2)) * (180/π)
+	Decl = atan(zequat, sqrt(xequat^2 + yequat^2)) * (180/pi)
 	
 	# calculate GMST0 	
 	GMST0 = revolve(coords[5] + 180) / 15 
@@ -30,7 +30,7 @@ function sun(day_number, latitude, longitude, UT)
 	zhor = x2 * cosd(latitude) + z2 * sind(latitude) 
 
 	# finally calculate azimuth and altitude 
-	azimuth = atan2(yhor, xhor) * (180/π) + 180 
-	altitude = atan2(zhor, sqrt(xhor^2 + yhor^2)) * (180/π)
+	azimuth = atan(yhor, xhor) * (180/pi) + 180 
+	altitude = atan(zhor, sqrt(xhor^2 + yhor^2)) * (180/pi)
 	return [RA, Decl, SIDTIME, azimuth, altitude] 
 end

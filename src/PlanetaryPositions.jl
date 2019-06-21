@@ -21,11 +21,11 @@ function revolve(degree)
 end
 
 function eccentric_anomaly(M, e, tol)
-	e0 = M + (180/π) * e * sind(M) * (1 + e + cosd(M))
-        e1 = e0 - (e0 - (180/π) * e * sind(e0) - M) / (1 - e * cosd(e0))
+	e0 = M + (180/pi) * e * sind(M) * (1 + e + cosd(M))
+        e1 = e0 - (e0 - (180/pi) * e * sind(e0) - M) / (1 - e * cosd(e0))
         while abs(e0-e1) > tol
 		e0 = e1
-		e1 = e0 - (e0 - (180/π) * e * sind(e0) -M) / (1 -e * cosd(e0))
+		e1 = e0 - (e0 - (180/pi) * e * sind(e0) -M) / (1 -e * cosd(e0))
 	end
 	return e1
 end
@@ -40,13 +40,13 @@ function sun_rectangular(day_number)
 	L = w + M				  # sun's mean longitude
 	L = revolve(L)
 	# sun's eccentric anomaly
-	E = M + (180/π) * e * sind(M) * (1 + e * cosd(M))
+	E = M + (180/pi) * e * sind(M) * (1 + e * cosd(M))
 	# sun's rectrangular coordinates
 	x = cosd(E) - e
 	y = sind(E) * sqrt(1 - e*e)
 	# convert to distance and true anomaly
 	r = sqrt(x*x + y*y)
-	v = atan2(y, x) * (180/π)
+	v = atan(y, x) * (180/pi)
 	# sun's longitude
 	lon = v + w
 	lon = revolve(lon)
@@ -71,7 +71,7 @@ function altitude_azimuth(sidereal_time, right_ascension, declination, latitude)
 	x_horizon = x * sind(latitude) - z * cosd(latitude)
 	y_horizon = y
 	z_horizon = x * cosd(latitude) + z * sind(latitude)
-	azimuth = atan2(y_horizon,x_horizon) * (180/π) + 180 
+	azimuth = atan(y_horizon,x_horizon) * (180/pi) + 180 
 	altitude = asind(z_horizon)
 	return [altitude, azimuth]
 end
